@@ -2,34 +2,34 @@
 
 public class WarehouseManager
 {
-    public readonly Dictionary<string, WarehouseCount> Cities = new();
-    public readonly Dictionary<string, WarehouseCount> Voivodeships = new();
+    private readonly Dictionary<string, WarehouseCount> _cities = new();
+    private readonly Dictionary<string, WarehouseCount> _voivodeships = new();
 
     public void AddWarehouseToVoivodeship(string voivodeship, string status)
     {
-        if (!Voivodeships.ContainsKey(voivodeship))
-            Voivodeships.Add(voivodeship, new WarehouseCount());
+        if (!_voivodeships.ContainsKey(voivodeship))
+            _voivodeships.Add(voivodeship, new WarehouseCount());
 
         if (status.Equals("Aktywna"))
-            Voivodeships[voivodeship].Active++;
+            _voivodeships[voivodeship].Active++;
         else
-            Voivodeships[voivodeship].Inactive++;
+            _voivodeships[voivodeship].Inactive++;
     }
 
     public void AddWarehouseToCity(string city, string status)
     {
-        if (!Cities.ContainsKey(city))
-            Cities.Add(city, new WarehouseCount());
+        if (!_cities.ContainsKey(city))
+            _cities.Add(city, new WarehouseCount());
 
         if (status.Equals("Aktywna"))
-            Cities[city].Active++;
+            _cities[city].Active++;
         else
-            Cities[city].Inactive++;
+            _cities[city].Inactive++;
     }
 
     public void PrintAllVoivodeships()
     {
-        foreach (var (voivodeship, warehouseCount) in Voivodeships)
+        foreach (var (voivodeship, warehouseCount) in _voivodeships)
         {
             var str = $"{voivodeship} [ aktywne: {warehouseCount.Active}, nieaktywne: {warehouseCount.Inactive} ]";
             Console.WriteLine(str);
@@ -38,8 +38,8 @@ public class WarehouseManager
 
     public void PrintVoivodeshipsWithMaxActiveAndInactiveWarehouses()
     {
-        var voivodeshipWithMostActive = Voivodeships.MaxBy(pair => pair.Value.Active).Key;
-        var voivodeshipWithMostInactive = Voivodeships.MaxBy(pair => pair.Value.Inactive).Key;
+        var voivodeshipWithMostActive = _voivodeships.MaxBy(pair => pair.Value.Active).Key;
+        var voivodeshipWithMostInactive = _voivodeships.MaxBy(pair => pair.Value.Inactive).Key;
         Console.WriteLine($"Województwo z największą liczbą aktywnych hurtowni: {voivodeshipWithMostActive}");
         Console.WriteLine($"Województwo z największą liczbą nieaktywnych hurtowni: {voivodeshipWithMostInactive}");
     }
@@ -47,7 +47,7 @@ public class WarehouseManager
     public void PrintTopThreeCitiesWithMostActiveWarehouses()
     {
         var topThreeCities =
-            (from entry in Cities orderby entry.Value.Active descending select entry).Take(3);
+            (from entry in _cities orderby entry.Value.Active descending select entry).Take(3);
 
         Console.WriteLine("Trzy miasta, w których jest najwięcej aktywnych hurtowni:");
         foreach (var (city, warehouseCount) in topThreeCities)

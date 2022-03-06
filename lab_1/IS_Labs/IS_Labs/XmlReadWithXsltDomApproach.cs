@@ -4,7 +4,7 @@ using IS_Labs.Helpers;
 
 namespace IS_Labs;
 
-public static class XmlReadWithXsltDom
+public static class XmlReadWithXsltDomApproach
 {
     public static void ReadMedicalProducts(string filepath)
     {

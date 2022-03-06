@@ -15,5 +15,9 @@ XmlReadWithSaxApproach.ReadWarehouses(warehousesXmlPath);
 
 // odczyt danych z wykorzystaniem XPath i DOM
 Console.WriteLine("\n==================== XML loaded with XPath ====================");
-XmlReadWithXsltDom.ReadMedicalProducts(medicalProductsXmlPath);
-XmlReadWithXsltDom.ReadWarehouses(warehousesXmlPath);
+XmlReadWithXsltDomApproach.ReadMedicalProducts(medicalProductsXmlPath);
+XmlReadWithXsltDomApproach.ReadWarehouses(warehousesXmlPath);
+
+// głębsza analiza treści dokumentu
+Console.WriteLine("\n==================== Deeper analysis ====================");
+DeeperAnalysis.AnalyzeMedicalProducts(medicalProductsXmlPath);

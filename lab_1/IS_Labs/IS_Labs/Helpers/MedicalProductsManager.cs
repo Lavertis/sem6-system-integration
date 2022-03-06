@@ -2,23 +2,23 @@
 
 public class MedicalProductsManager
 {
-    public readonly Dictionary<string, HashSet<string>> MedicalProducts = new();
-    public int MometasoniFuroasCount;
+    private readonly Dictionary<string, HashSet<string>> _medicalProducts = new();
+    private int _mometasoniFuroasCount;
 
     public void AddProduct(string commonName, string form)
     {
         if (form == "Krem" && commonName == "Mometasoni furoas")
-            MometasoniFuroasCount++;
+            _mometasoniFuroasCount++;
 
-        if (MedicalProducts.ContainsKey(commonName))
-            MedicalProducts[commonName].Add(form);
+        if (_medicalProducts.ContainsKey(commonName))
+            _medicalProducts[commonName].Add(form);
         else
-            MedicalProducts.Add(commonName, new HashSet<string> {form});
+            _medicalProducts.Add(commonName, new HashSet<string> {form});
     }
 
     public void PrintNumberOfProductsWithTheSameCommonNameButInDifferentForms()
     {
-        var sameNameDifferentFormCount = MedicalProducts.Values.Count(set => set.Count > 1);
+        var sameNameDifferentFormCount = _medicalProducts.Values.Count(set => set.Count > 1);
         var str2 = "Liczba preparatów leczniczych o takiej samej nazwie powszechnej pod różnymi " +
                    $"postaciami: {sameNameDifferentFormCount}";
         Console.WriteLine(str2);
@@ -27,7 +27,7 @@ public class MedicalProductsManager
     public void PrintMometasoniFuroasCount()
     {
         var str1 = "Liczba produktów leczniczych w postaci kremu, których jedyną substancją czynną jest " +
-                   $"Mometasoni furoas: {MometasoniFuroasCount}";
+                   $"Mometasoni furoas: {_mometasoniFuroasCount}";
         Console.WriteLine(str1);
     }
 }
