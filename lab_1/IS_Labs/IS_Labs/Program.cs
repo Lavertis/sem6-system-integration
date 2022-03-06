@@ -13,7 +13,7 @@ Console.WriteLine("\n==================== XML loaded by SAX Approach ===========
 XmlReadWithSaxApproach.ReadMedicalProducts(medicalProductsXmlPath);
 XmlReadWithSaxApproach.ReadWarehouses(warehousesXmlPath);
 
-// // odczyt danych z wykorzystaniem XPath i DOM
-// Console.WriteLine("\nXML loaded with XPath");
-// XmlReadWithXsltDom.ReadMedicalProducts(medicalProductsXmlPath);
-// // XmlReadWithXsltDom.ReadWarehouses(warehousesXmlPath);
+// odczyt danych z wykorzystaniem XPath i DOM
+Console.WriteLine("\n==================== XML loaded with XPath ====================");
+XmlReadWithXsltDom.ReadMedicalProducts(medicalProductsXmlPath);
+XmlReadWithXsltDom.ReadWarehouses(warehousesXmlPath);

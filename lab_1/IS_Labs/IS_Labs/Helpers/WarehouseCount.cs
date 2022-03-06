@@ -1,4 +1,4 @@
-﻿namespace IS_Labs;
+﻿namespace IS_Labs.Helpers;
 
 public class WarehouseCount
 {

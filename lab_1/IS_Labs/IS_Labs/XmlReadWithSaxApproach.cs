@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using IS_Labs.Helpers;
 
 namespace IS_Labs;
 
@@ -16,35 +17,22 @@ public static class XmlReadWithSaxApproach
 
         var reader = XmlReader.Create(filepath, settings); // odczyt zawartości dokumentu
         reader.MoveToContent();
-        var count = 0;
 
-        var lekiZPostaciami = new Dictionary<string, HashSet<string>>();
+        var mpm = new MedicalProductsManager();
 
         while (reader.Read()) // analiza każdego z węzłów dokumentu
         {
             if (reader.NodeType != XmlNodeType.Element || reader.Name != "produktLeczniczy")
                 continue;
 
-            var postac = reader.GetAttribute("postac")!;
-            var nazwaPowszechna = reader.GetAttribute("nazwaPowszechnieStosowana")!;
+            var form = reader.GetAttribute("postac")!;
+            var commonName = reader.GetAttribute("nazwaPowszechnieStosowana")!;
 
-            if (postac == "Krem" && nazwaPowszechna == "Mometasoni furoas")
-                count++;
-
-            if (lekiZPostaciami.ContainsKey(nazwaPowszechna))
-                lekiZPostaciami[nazwaPowszechna].Add(postac);
-            else
-                lekiZPostaciami.Add(nazwaPowszechna, new HashSet<string> {postac});
+            mpm.AddProduct(commonName, form);
         }
 
-        var str1 = "Liczba produktów leczniczych w postaci kremu, których jedyną substancją czynną jest " +
-                   $"Mometasoni furoas: {count}";
-        Console.WriteLine(str1);
-
-        var sameNameDifferentFormCount = lekiZPostaciami.Values.Count(set => set.Count > 1);
-        var str2 = "Liczba preparatów leczniczych o takiej samej nazwie powszechnej pod różnymi " +
-                   $"postaciami: {sameNameDifferentFormCount}";
-        Console.WriteLine(str2);
+        mpm.PrintMometasoniFuroasCount();
+        mpm.PrintNumberOfProductsWithTheSameCommonNameButInDifferentForms();
     }
 
     public static void ReadWarehouses(string filepath)
@@ -60,7 +48,7 @@ public static class XmlReadWithSaxApproach
         var reader = XmlReader.Create(filepath, settings); // odczyt zawartości dokumentu
         reader.MoveToContent();
 
-        var voivodeships = new Dictionary<string, WarehouseCount>();
+        var wm = new WarehouseManager();
 
         while (reader.ReadState != ReadState.EndOfFile) // analiza każdego z węzłów dokumentu
         {
@@ -81,25 +69,14 @@ public static class XmlReadWithSaxApproach
             }
 
             var voivodeship = reader.GetAttribute("wojewodztwo")!.ToUpper();
+            var city = reader.GetAttribute("miejscowosc")!.ToUpper();
 
-            if (!voivodeships.ContainsKey(voivodeship))
-                voivodeships.Add(voivodeship, new WarehouseCount());
-
-            if (status.Equals("Aktywna"))
-                voivodeships[voivodeship].Active++;
-            else
-                voivodeships[voivodeship].Inactive++;
+            wm.AddWarehouseToVoivodeship(voivodeship, status);
+            wm.AddWarehouseToCity(city, status);
         }
 
-        var voivodeshipWithMostActive = voivodeships.MaxBy(pair => pair.Value.Active).Key;
-        var voivodeshipWithMostInactive = voivodeships.MaxBy(pair => pair.Value.Inactive).Key;
-        Console.WriteLine($"Voivodeship with most active warehouses: {voivodeshipWithMostActive}");
-        Console.WriteLine($"Voivodeship with most inactive warehouses: {voivodeshipWithMostInactive}");
-
-        // foreach (var (voivodeship, warehouseCount) in voivodeships)
-        // {
-        //     var str = $"{voivodeship} [ aktywne: {warehouseCount.Active}, nieaktywne: {warehouseCount.Inactive} ]";
-        //     Console.WriteLine(str);
-        // }
+        // wm.PrintAllVoivodeships();
+        wm.PrintVoivodeshipsWithMaxActiveAndInactiveWarehouses();
+        wm.PrintTopThreeCitiesWithMostActiveWarehouses();
     }
 }
