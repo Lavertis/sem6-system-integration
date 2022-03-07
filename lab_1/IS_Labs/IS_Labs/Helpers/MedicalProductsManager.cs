@@ -4,20 +4,22 @@ public class MedicalProductsManager
 {
     private readonly List<MedicalProduct> _medicalProducts = new();
 
-    public void AddProduct(string commonName, string form, string entityResponsible)
+    public void AddProduct(string? commonName = null, string? form = null,
+        string? entityResponsible = null, int? activeSubstancesCount = null)
     {
         var product = new MedicalProduct
         {
             CommonName = commonName,
             Form = form,
-            EntityResponsible = entityResponsible
+            EntityResponsible = entityResponsible,
+            ActiveSubstancesCount = activeSubstancesCount
         };
         _medicalProducts.Add(product);
     }
 
     public void PrintMometasoniFuroasCount()
     {
-        var count = _medicalProducts.Count(p => p.CommonName.Equals("Mometasoni furoas") && p.Form.Equals("Krem"));
+        var count = _medicalProducts.Count(p => p.CommonName!.Equals("Mometasoni furoas") && p.Form!.Equals("Krem"));
         var str1 = "Liczba produktów leczniczych w postaci kremu, których jedyną substancją czynną jest " +
                    $"Mometasoni furoas: {count}";
         Console.WriteLine(str1);
@@ -28,10 +30,10 @@ public class MedicalProductsManager
         var medicalProductsByCommonName = new Dictionary<string, HashSet<string>>();
         foreach (var product in _medicalProducts)
         {
-            if (medicalProductsByCommonName.ContainsKey(product.CommonName))
-                medicalProductsByCommonName[product.CommonName].Add(product.Form);
+            if (medicalProductsByCommonName.ContainsKey(product.CommonName!))
+                medicalProductsByCommonName[product.CommonName!].Add(product.Form!);
             else
-                medicalProductsByCommonName.Add(product.CommonName, new HashSet<string> {product.Form});
+                medicalProductsByCommonName.Add(product.CommonName!, new HashSet<string> {product.Form!});
         }
 
         var sameNameDifferentFormCount = medicalProductsByCommonName.Values.Count(set => set.Count > 1);
@@ -51,18 +53,18 @@ public class MedicalProductsManager
             {
                 case "Krem":
                 {
-                    if (creamsCountByEntityResponsible.ContainsKey(product.EntityResponsible))
-                        creamsCountByEntityResponsible[product.EntityResponsible]++;
+                    if (creamsCountByEntityResponsible.ContainsKey(product.EntityResponsible!))
+                        creamsCountByEntityResponsible[product.EntityResponsible!]++;
                     else
-                        creamsCountByEntityResponsible.Add(product.EntityResponsible, 1);
+                        creamsCountByEntityResponsible.Add(product.EntityResponsible!, 1);
                     break;
                 }
                 case { } f when f.ToUpper().Contains("TABLETKI"):
                 {
-                    if (pillsCountByEntityResponsible.ContainsKey(product.EntityResponsible))
-                        pillsCountByEntityResponsible[product.EntityResponsible]++;
+                    if (pillsCountByEntityResponsible.ContainsKey(product.EntityResponsible!))
+                        pillsCountByEntityResponsible[product.EntityResponsible!]++;
                     else
-                        pillsCountByEntityResponsible.Add(product.EntityResponsible, 1);
+                        pillsCountByEntityResponsible.Add(product.EntityResponsible!, 1);
                     break;
                 }
             }
@@ -80,12 +82,12 @@ public class MedicalProductsManager
 
         foreach (var product in _medicalProducts)
         {
-            if (product.Form.Equals("Krem"))
+            if (product.Form!.Equals("Krem"))
             {
-                if (creamsByEntityResponsible.ContainsKey(product.EntityResponsible))
-                    creamsByEntityResponsible[product.EntityResponsible]++;
+                if (creamsByEntityResponsible.ContainsKey(product.EntityResponsible!))
+                    creamsByEntityResponsible[product.EntityResponsible!]++;
                 else
-                    creamsByEntityResponsible.Add(product.EntityResponsible, 1);
+                    creamsByEntityResponsible.Add(product.EntityResponsible!, 1);
             }
         }
 
@@ -95,6 +97,33 @@ public class MedicalProductsManager
         foreach (var entityPair in topThreeEntitiesWithMostCreams)
         {
             Console.WriteLine(entityPair);
+        }
+    }
+
+    public void PrintNumberOfProductsWithOnlyOneActiveSubstanceAndWithMultipleActiveSubstances()
+    {
+        var oneActiveSubstanceCount = _medicalProducts.Count(p => p.ActiveSubstancesCount == 1);
+        var multipleActiveSubstancesCount = _medicalProducts.Count(p => p.ActiveSubstancesCount > 1);
+        Console.WriteLine($"Products with only one active substance: {oneActiveSubstanceCount}");
+        Console.WriteLine($"Products with multiple active substances: {multipleActiveSubstancesCount}");
+    }
+
+    public void PrintNumberOfProductsWithEveryCountOfActiveSubstances()
+    {
+        var dict = new SortedDictionary<int, int>(); // number of active substances, number of products
+        foreach (var product in _medicalProducts)
+        {
+            var activeSubstancesCount = product.ActiveSubstancesCount ?? -1;
+            if (dict.ContainsKey(activeSubstancesCount))
+                dict[activeSubstancesCount]++;
+            else
+                dict.Add(activeSubstancesCount, 1);
+        }
+
+        Console.WriteLine("Number of products by number of active substances:");
+        foreach (var (activeSubstances, productCount) in dict)
+        {
+            Console.WriteLine($"{activeSubstances}: {productCount}");
         }
     }
 }

@@ -11,30 +11,20 @@ public static class DeeperAnalysis
         doc.Load(filepath);
         var drugs = doc.GetElementsByTagName("produktLeczniczy");
 
-        var medicalProducts = new HashSet<MedicalProduct>();
+        var mpm = new MedicalProductsManager();
 
         foreach (XmlNode d in drugs)
         {
+            var commonName = d.Attributes!.GetNamedItem("nazwaPowszechnieStosowana")!.Value;
             var form = d.Attributes!.GetNamedItem("postac")!.Value;
-            var commonName = d.Attributes.GetNamedItem("nazwaPowszechnieStosowana")!.Value;
-            var productName = d.Attributes.GetNamedItem("nazwaProduktu")!.Value;
-            if (form == null || commonName == null || productName == null)
+            if (form == null || commonName == null)
                 throw new Exception();
 
-            var activeSubstancesCount = d.ChildNodes.Item(0)!.ChildNodes.Count;
-
-            var medicalProduct = new MedicalProduct
-            {
-                CommonName = commonName,
-                Form = form,
-                ActiveSubstancesCount = activeSubstancesCount
-            };
-            medicalProducts.Add(medicalProduct);
+            var activeSubstancesCount = d.FirstChild!.ChildNodes.Count;
+            mpm.AddProduct(commonName, form, activeSubstancesCount: activeSubstancesCount);
         }
 
-        var oneActiveSubstanceCount = medicalProducts.Count(p => p.ActiveSubstancesCount == 1);
-        var multipleActiveSubstancesCount = medicalProducts.Count(p => p.ActiveSubstancesCount > 1);
-        Console.WriteLine($"Products with only one active substance: {oneActiveSubstanceCount}");
-        Console.WriteLine($"Products with multiple active substances: {multipleActiveSubstancesCount}");
+        mpm.PrintNumberOfProductsWithOnlyOneActiveSubstanceAndWithMultipleActiveSubstances();
+        mpm.PrintNumberOfProductsWithEveryCountOfActiveSubstances();
     }
 }
