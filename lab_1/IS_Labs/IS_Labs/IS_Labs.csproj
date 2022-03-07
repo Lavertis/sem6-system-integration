@@ -8,10 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Update="Assets\warehouses.xml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Assets\medical_products.xml">
+        <None Update="Assets\data.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>

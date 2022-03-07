@@ -25,7 +25,6 @@ public static class DeeperAnalysis
 
             var medicalProduct = new MedicalProduct
             {
-                ProductName = productName,
                 CommonName = commonName,
                 Form = form,
                 ActiveSubstancesCount = activeSubstancesCount
