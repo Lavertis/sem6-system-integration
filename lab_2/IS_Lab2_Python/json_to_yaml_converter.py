@@ -6,7 +6,7 @@ from multipledispatch import dispatch
 from data_extractor import DataExtractor
 
 
-class ConvertJsonToYaml:
+class JsonToYamlConverter:
 
     @staticmethod
     @dispatch(str, str)

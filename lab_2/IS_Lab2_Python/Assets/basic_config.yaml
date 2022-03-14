@@ -1,0 +1,7 @@
+paths:
+  source_folder: 'Assets/'
+  json_source_file: 'data.json'
+  json_destination_file: 'data_mod.json'
+  yaml_destination_file: 'data_mod.yaml'
+serialization_source: 'object'
+actions: [ 'some_stats', 'show_number_of_offices', 'serialize', 'convert' ]

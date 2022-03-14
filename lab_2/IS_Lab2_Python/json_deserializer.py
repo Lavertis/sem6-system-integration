@@ -3,7 +3,7 @@ import json
 from voivodeship import Voivodeship
 
 
-class DeserializeJson:
+class JsonDeserializer:
 
     def __init__(self, filename):
         temp_data = open(filename, encoding="utf8")

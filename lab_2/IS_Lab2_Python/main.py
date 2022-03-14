@@ -1,12 +1,12 @@
 import yaml
 
-from convert_json_to_yaml import ConvertJsonToYaml
-from deserialize_json import DeserializeJson
-from serialize_json import SerializeJson
+from json_deserializer import JsonDeserializer
+from json_serializer import JsonSerializer
+from json_to_yaml_converter import JsonToYamlConverter
 
 
 def serialize():
-    SerializeJson.run(
+    JsonSerializer.run(
         newDeserializer.data,
         config['paths']['source_folder'] + config['paths']['json_destination_file']
     )
@@ -14,12 +14,12 @@ def serialize():
 
 def convert():
     if config['serialization_source'] == 'file':
-        ConvertJsonToYaml.run(
+        JsonToYamlConverter.run(
             config['paths']['source_folder'] + config['paths']['json_source_file'],
             config['paths']['source_folder'] + config['paths']['yaml_destination_file']
         )
     elif config['serialization_source'] == 'object':
-        ConvertJsonToYaml.run(
+        JsonToYamlConverter.run(
             newDeserializer.data,
             config['paths']['source_folder'] + config['paths']['yaml_destination_file']
         )
@@ -28,10 +28,10 @@ def convert():
 config_file = open('Assets/basic_config.yaml', encoding="utf8")
 config = yaml.load(config_file, Loader=yaml.FullLoader)
 
-newDeserializer = DeserializeJson(config['paths']['source_folder'] + config['paths']['json_source_file'])
+newDeserializer = JsonDeserializer(config['paths']['source_folder'] + config['paths']['json_source_file'])
 
 actions = {
-    'dolnośląskie': newDeserializer.some_stats,
+    'some_stats': newDeserializer.some_stats,
     'show_number_of_offices': newDeserializer.number_of_individual_offices_in_each_voivodeship,
     'serialize': serialize,
     'convert': convert

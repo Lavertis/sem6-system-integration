@@ -3,7 +3,7 @@ import json
 from data_extractor import DataExtractor
 
 
-class SerializeJson:
+class JsonSerializer:
 
     @staticmethod
     def run(deserialized_data, file_location):
