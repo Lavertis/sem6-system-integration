@@ -3,6 +3,7 @@ import yaml
 from json_deserializer import JsonDeserializer
 from json_serializer import JsonSerializer
 from json_to_yaml_converter import JsonToYamlConverter
+from json_xml_converter import JsonToXmlConverter, XmlToJsonConverter
 
 
 def serialize():
@@ -12,7 +13,7 @@ def serialize():
     )
 
 
-def convert():
+def convert_json_to_yaml():
     if config['serialization_source'] == 'file':
         JsonToYamlConverter.run(
             config['paths']['source_folder'] + config['paths']['json_source_file'],
@@ -34,8 +35,18 @@ actions = {
     'some_stats': newDeserializer.some_stats,
     'show_number_of_offices': newDeserializer.number_of_individual_offices_in_each_voivodeship,
     'serialize': serialize,
-    'convert': convert
+    'convert_json_to_yaml': convert_json_to_yaml
 }
 
 for action in config['actions']:
     actions[action]()
+
+JsonToXmlConverter.convert(
+    config['paths']['source_folder'] + config['paths']['json_source_file'],
+    config['paths']['source_folder'] + config['paths']['xml_destination_file']
+)
+
+XmlToJsonConverter.convert(
+    config['paths']['source_folder'] + config['paths']['xml_source_file'],
+    config['paths']['source_folder'] + config['paths']['json_from_xml_file']
+)

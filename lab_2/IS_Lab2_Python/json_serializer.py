@@ -7,7 +7,7 @@ class JsonSerializer:
 
     @staticmethod
     def run(deserialized_data, file_location):
-        extracted_data = DataExtractor.extract(deserialized_data)
+        extracted_data = DataExtractor.extract_from_json(deserialized_data)
 
         json_temp = {"departaments": extracted_data}
         with open(file_location, 'w', encoding='utf-8') as f:

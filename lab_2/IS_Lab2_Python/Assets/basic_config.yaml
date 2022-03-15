@@ -3,5 +3,8 @@ paths:
   json_source_file: 'data.json'
   json_destination_file: 'data_mod.json'
   yaml_destination_file: 'data_mod.yaml'
+  xml_source_file: 'data.xml'
+  xml_destination_file: 'data_mod.xml'
+  json_from_xml_file: 'data_mod_from_xml.json'
 serialization_source: 'object'
-actions: [ 'some_stats', 'show_number_of_offices', 'serialize', 'convert' ]
+actions: [ 'some_stats', 'show_number_of_offices', 'serialize', 'convert_json_to_yaml' ]
