@@ -14,7 +14,7 @@ public class MyFirstWS implements MyFirstSOAPInterface {
 
     public long getDaysBetweenDates(String date1, String date2) {
         long numberOfDays = 0;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         try {
             LocalDateTime tempDate1 = LocalDate.parse(date1, dtf).atStartOfDay();
             LocalDateTime tempDate2 = LocalDate.parse(date2, dtf).atStartOfDay();
