@@ -1,7 +1,7 @@
 ﻿using Server.Entities;
 using Server.Models;
 
-namespace Server.Services;
+namespace Server.Services.UserService;
 
 public interface IUserService
 {
@@ -9,4 +9,5 @@ public interface IUserService
     IEnumerable<User> GetAllUsers();
     User? GetUserByUsername(string username);
     User? GetUserById(int id);
+    int GetUserCount();
 }

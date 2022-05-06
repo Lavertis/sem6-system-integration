@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Server.Entities;
 using Server.Models;
 
-namespace Server.Services;
+namespace Server.Services.UserService;
 
 public class UserService : IUserService
 {
@@ -56,6 +56,11 @@ public class UserService : IUserService
     public User? GetUserById(int id)
     {
         return _users.FirstOrDefault(x => x.Id == id);
+    }
+
+    public int GetUserCount()
+    {
+        return _users.Count;
     }
 
     public User? GetUserByUsername(string username)
