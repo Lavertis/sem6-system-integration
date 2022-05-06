@@ -19,10 +19,10 @@ public class MathController : ControllerBase
     /// <summary>
     /// Returns random prime number in specified range. Only for users with role "number".
     /// </summary>
-    [HttpGet("random-prime/min/{min:int}/max/{max:int}")]
+    [HttpGet("random-prime")]
     [Authorize(Roles = "number", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<int> GetRandomPrime(int min, int max)
+    public ActionResult<int> GetRandomPrime()
     {
-        return Ok(_mathService.GetRandomPrime(min, max));
+        return Ok(_mathService.GetRandomPrime(2, 13));
     }
 }
