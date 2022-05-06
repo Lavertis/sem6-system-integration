@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Server.Entities;
 using Server.Models;
 using Server.Services;
 
@@ -13,6 +16,13 @@ public class UsersController : ControllerBase
     public UsersController(IUserService userService)
     {
         _userService = userService;
+    }
+
+    [HttpGet]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<IEnumerable<User>> GetAllUsers()
+    {
+        return Ok(_userService.GetAllUsers());
     }
 
     [HttpPost("authenticate")]
